@@ -25,6 +25,7 @@ SECSOSO利用RAG技术结合大模型(使用moonshot-v1-8k)，结合私有安全
 
 
 具体差异可参考以下对比搜索(截图时间2024/09/12)：
+或参考 https://secsoso.com/about#how_to_search
 
 #### 查询最新漏洞
 ##### SECSOSO 
