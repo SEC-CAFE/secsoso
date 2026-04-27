@@ -1,0 +1,1098 @@
+general:
+  # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
+  debug: false
+  # displayed name
+  instance_name: 'secsoso'
+  # For example: https://example.com/privacy
+  privacypolicy_url: false
+  # use true to use your own donation page written in searx/info/en/donate.md
+  # use false to disable the donation link
+  donation_url: false
+  # mailto:contact@example.com
+  contact_url: false
+  # record stats
+  enable_metrics: true
+
+brand:
+  new_issue_url: https://github.com/searxng/searxng/issues/new
+  docs_url: https://docs.searxng.org/
+  public_instances: https://searx.space
+  wiki_url: https://github.com/searxng/searxng/wiki
+  issue_url: https://github.com/searxng/searxng/issues
+  # custom:
+  #   maintainer: "Jon Doe"
+  #   # Custom entries in the footer: [title]: [link]
+  #   links:
+  #     Uptime: https://uptime.searxng.org/history/darmarit-org
+  #     About: "https://searxng.org"
+
+search:
+  # Filter results. 0: None, 1: Moderate, 2: Strict
+  safe_search: 1
+  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex", "mwmbl",
+  # "seznam", "startpage", "stract", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
+  # by default.
+  autocomplete: ''
+  # minimun characters to type before autocompleter starts
+  autocomplete_min: 4
+  # Default search language - leave blank to detect from browser information or
+  # use codes from 'languages.py'
+  default_lang: 'auto'
+  # max_page: 0  # if engine supports paging, 0 means unlimited numbers of pages
+  # Available languages
+  # languages:
+  #   - all
+  #   - en
+  #   - en-US
+  #   - de
+  #   - it-IT
+  #   - fr
+  #   - fr-BE
+  # ban time in seconds after engine errors
+  ban_time_on_fail: 5
+  # max ban time in seconds after engine errors
+  max_ban_time_on_fail: 120
+  suspended_times:
+    # Engine suspension time after error (in seconds; set to 0 to disable)
+    # For error "Access denied" and "HTTP error [402, 403]"
+    SearxEngineAccessDenied: 86400
+    # For error "CAPTCHA"
+    SearxEngineCaptcha: 86400
+    # For error "Too many request" and "HTTP error 429"
+    SearxEngineTooManyRequests: 3600
+    # Cloudflare CAPTCHA
+    cf_SearxEngineCaptcha: 1296000
+    cf_SearxEngineAccessDenied: 86400
+    # ReCAPTCHA
+    recaptcha_SearxEngineCaptcha: 604800
+
+  # remove format to deny access, use lower case.
+  # formats: [html, csv, json, rss]
+  formats:
+    - html
+    - json
+
+server:
+  # Is overwritten by ${SEARXNG_PORT} and ${SEARXNG_BIND_ADDRESS}
+  port: 8888
+  bind_address: '127.0.0.1'
+  # public URL of the instance, to ensure correct inbound links. Is overwritten
+  # by ${SEARXNG_URL}.
+  base_url: / # "http://example.com/location"
+  limiter: false # rate limit the number of request on the instance, block some bots
+  public_instance: false # enable features designed only for public instances
+
+  # If your instance owns a /etc/searxng/settings.yml file, then set the following
+  # values there.
+
+  secret_key: 'CHANGE_ME' # Prefer overriding with ${SEARXNG_SECRET}
+  # Proxying image results through searx
+  image_proxy: false
+  # 1.0 and 1.1 are supported
+  http_protocol_version: '1.0'
+  # POST queries are more secure as they don't show up in history but may cause
+  # problems when using Firefox containers
+  method: 'POST'
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
+
+redis:
+  # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.
+  # https://docs.searxng.org/admin/settings/settings_redis.html#settings-redis
+  url: false
+
+ui:
+  # Custom static path - leave it blank if you didn't change
+  static_path: ''
+  static_use_hash: false
+  # Custom templates path - leave it blank if you didn't change
+  templates_path: ''
+  # query_in_title: When true, the result page's titles contains the query
+  # it decreases the privacy, since the browser can records the page titles.
+  query_in_title: false
+  # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
+  infinite_scroll: false
+  # ui theme
+  default_theme: simple
+  # center the results ?
+  center_alignment: false
+  # URL prefix of the internet archive, don't forget trailing slash (if needed).
+  # cache_url: "https://webcache.googleusercontent.com/search?q=cache:"
+  # Default interface locale - leave blank to detect from browser information or
+  # use codes from the 'locales' config section
+  default_locale: ''
+  # Open result links in a new tab by default
+  # results_on_new_tab: false
+  theme_args:
+    # style of simple theme: auto, light, dark
+    simple_style: auto
+  # Perform search immediately if a category selected.
+  # Disable to select multiple categories at once and start the search manually.
+  search_on_category_select: true
+  # Hotkeys: default or vim
+  hotkeys: default
+
+# Lock arbitrary settings on the preferences page.  To find the ID of the user
+# setting you want to lock, check the ID of the form on the page "preferences".
+#
+# preferences:
+#   lock:
+#     - language
+#     - autocomplete
+#     - method
+#     - query_in_title
+
+# searx supports result proxification using an external service:
+# https://github.com/asciimoo/morty uncomment below section if you have running
+# morty proxy the key is base64 encoded (keep the !!binary notation)
+# Note: since commit af77ec3, morty accepts a base64 encoded key.
+#
+# result_proxy:
+#   url: http://127.0.0.1:3000/
+#   # the key is a base64 encoded string, the YAML !!binary prefix is optional
+#   key: !!binary "your_morty_proxy_key"
+#   # [true|false] enable the "proxy" button next to each result
+#   proxify_results: true
+
+# communication with search engines
+#
+outgoing:
+  # default timeout in seconds, can be override by engine
+  request_timeout: 3.0
+  # the maximum timeout in seconds
+  # max_request_timeout: 10.0
+  # suffix of searx_useragent, could contain information like an email address
+  # to the administrator
+  useragent_suffix: ''
+  # The maximum number of concurrent connections that may be established.
+  pool_connections: 100
+  # Allow the connection pool to maintain keep-alive connections below this
+  # point.
+  pool_maxsize: 20
+  # See https://www.python-httpx.org/http2/
+  enable_http2: true
+  # uncomment below section if you want to use a custom server certificate
+  # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
+  # and https://www.python-httpx.org/compatibility/#ssl-configuration
+  #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
+  #
+  # uncomment below section if you want to use a proxyq see: SOCKS proxies
+  #   https://2.python-requests.org/en/latest/user/advanced/#proxies
+  # are also supported: see
+  #   https://2.python-requests.org/en/latest/user/advanced/#socks
+  #
+  #  proxies:
+  #    all://:
+  #      - http://proxy1:8080
+  #      - http://proxy2:8080
+  #
+  #  using_tor_proxy: true
+  #
+  # Extra seconds to add in order to account for the time taken by the proxy
+  #
+  #  extra_proxy_timeout: 10.0
+  #
+  # uncomment below section only if you have more than one network interface
+  # which can be the source of outgoing search requests
+  #
+  #  source_ips:
+  #    - 1.1.1.1
+  #    - 1.1.1.2
+  #    - fe80::/126
+
+# External plugin configuration, for more details see
+#   https://docs.searxng.org/dev/plugins.html
+#
+# plugins:
+#   - plugin1
+#   - plugin2
+#   - ...
+
+# Comment or un-comment plugin to activate / deactivate by default.
+#
+# enabled_plugins:
+#   # these plugins are enabled if nothing is configured ..
+#   - 'Hash plugin'
+#   - 'Self Information'
+#   - 'Tracker URL remover'
+#   - 'Ahmia blacklist'  # activation depends on outgoing.using_tor_proxy
+#   # these plugins are disabled if nothing is configured ..
+#   - 'Hostname replace'  # see hostname_replace configuration below
+#   - 'Open Access DOI rewrite'
+#   - 'Tor check plugin'
+#   # Read the docs before activate: auto-detection of the language could be
+#   # detrimental to users expectations / users can activate the plugin in the
+#   # preferences if they want.
+#   - 'Autodetect search language'
+
+# Configuration of the "Hostname replace" plugin:
+#
+# hostname_replace:
+#   '(.*\.)?youtube\.com$': 'invidious.example.com'
+#   '(.*\.)?youtu\.be$': 'invidious.example.com'
+#   '(.*\.)?youtube-noocookie\.com$': 'yotter.example.com'
+#   '(.*\.)?reddit\.com$': 'teddit.example.com'
+#   '(.*\.)?redd\.it$': 'teddit.example.com'
+#   '(www\.)?twitter\.com$': 'nitter.example.com'
+#   # to remove matching host names from result list, set value to false
+#   'spam\.example\.com': false
+
+checker:
+  # disable checker when in debug mode
+  off_when_debug: true
+
+  # use "scheduling: false" to disable scheduling
+  # scheduling: interval or int
+
+  # to activate the scheduler:
+  # * uncomment "scheduling" section
+  # * add "cache2 = name=searxngcache,items=2000,blocks=2000,blocksize=4096,bitmap=1"
+  #   to your uwsgi.ini
+
+  # scheduling:
+  #   start_after: [300, 1800]  # delay to start the first run of the checker
+  #   every: [86400, 90000]     # how often the checker runs
+
+  # additional tests: only for the YAML anchors (see the engines section)
+  #
+  additional_tests:
+    rosebud: &test_rosebud
+      matrix:
+        query: rosebud
+        lang: en
+      result_container:
+        - not_empty
+        - ['one_title_contains', 'citizen kane']
+      test:
+        - unique_results
+
+    android: &test_android
+      matrix:
+        query: ['android']
+        lang: ['en', 'de', 'fr', 'zh-CN']
+      result_container:
+        - not_empty
+        - ['one_title_contains', 'google']
+      test:
+        - unique_results
+
+  # tests: only for the YAML anchors (see the engines section)
+  tests:
+    infobox: &tests_infobox
+      infobox:
+        matrix:
+          query: ['linux', 'new york', 'bbc']
+        result_container:
+          - has_infobox
+
+categories_as_tabs:
+  general:
+  images:
+  news:
+  it:
+  vul:
+  navigation:
+  project:
+  book:
+  event:
+  paper:
+  standards:
+  course:
+  technical:
+  job:
+  social:
+  mind:
+  poc:
+
+engines:
+  - name : sec mind
+    engine : json
+    engine_type: online
+    search_url : http://appsearch:3002/api/as/v1/engines/sec-mind/search.json
+    enable_http: true
+    method: POST
+    data: 
+      query: "{query}"
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: results
+    title_query: title/raw
+    content_query: content/raw
+    url_query: url/raw
+    thumbnail_query: file/raw
+    categories: [mind]
+    word_segment: true
+    timeout: 6.0
+    shortcut: secm
+    weight: 200
+    disabled: false
+
+  - name : secsoso
+    engine : json
+    engine_type: online
+    search_url : http://appsearch:3002/api/as/v1/engines/secsoso/search.json
+    enable_http: true
+    method: POST
+    data:
+      query: "{query}"
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: results
+    title_query: title/raw
+    content_query: content/raw
+    url_query: url/raw
+    thumbnail_query: file/raw
+    categories: [general]
+    word_segment: true
+    timeout: 6.0
+    shortcut: secs
+    weight: 160
+    disabled: false
+
+  - name : sec wiki
+    engine : json
+    engine_type: online
+    search_url : http://appsearch:3002/api/as/v1/engines/sec-wiki/search.json
+    enable_http: true
+    method: POST
+    data:
+      query: "{query}"
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: results
+    title_query: title/raw
+    content_query: content/raw
+    url_query: url/raw
+    thumbnail_query: file/raw
+    categories: [technical]
+    word_segment: true
+    timeout: 6.0
+    shortcut: scwk
+    weight: 180
+    disabled: false
+
+  - name : sec vuls
+    engine : json
+    engine_type: online
+    search_url : http://appsearch:3002/api/as/v1/engines/sec-vuls/search.json
+    enable_http: true
+    method: POST
+    data:
+      query: "{query}"
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: results
+    title_query: title/raw
+    content_query: content/raw
+    url_query: url/raw
+    thumbnail_query: file/raw
+    categories: [vul]
+    word_segment: true
+    timeout: 6.0
+    shortcut: scvl
+    weight: 220
+    disabled: false
+
+  - name : cssn standards
+    engine : json
+    engine_type: online
+    paging: true
+    first_page_num: 1
+    search_url : https://www.cssn.net.cn/api/standards/?keyword={query}&page={pageno}
+    enable_http: true
+    headers:
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36
+    results_query: results
+    title_query: a298
+    content_query: 编号=a100|类别=a104name|生效状态=a000|CCS分类=a825name|a302
+    url_query: yf001
+    url_prefix: https://www.cssn.net.cn/cssn/productDetail/
+    categories: [standards]
+    word_segment: true
+    proxies:
+      http:  socks5://172.25.0.10:1080
+      https: socks5://172.25.0.10:1080
+    timeout: 20
+    shortcut: cssn
+    weight: 200
+    disabled: false
+
+  - name : sec tools
+    engine : json
+    engine_type: online
+    search_url : http://appsearch:3002/api/as/v1/engines/sec-tools/search.json
+    enable_http: true
+    method: POST
+    data: 
+      query: "{query}"
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: results
+    title_query: title/raw
+    content_query: content/raw
+    url_query: url/raw
+    categories: [project]
+    word_segment: true
+    timeout: 6.0
+    shortcut: swtl
+    weight: 150
+    disabled: false
+
+  - name : chaitin tools
+    engine : json
+    engine_type: online
+    search_url : https://stack.chaitin.com/api/v2/tools/list/?limit=10&offset=0&ordering=&qbase64={query}
+    enable_http: true
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: data/list
+    title_query: name
+    content_query: tool_slogan
+    url_query: id
+    url_prefix: https://stack.chaitin.com/tool/detail/
+    categories: [project]
+    need_base64: true
+    word_segment: true
+    timeout: 6.0
+    shortcut: cttl
+    weight: 100
+    disabled: false
+
+  - name : sec social
+    engine : json
+    engine_type: online
+    search_url : http://appsearch:3002/api/as/v1/engines/sec-social/search.json
+    enable_http: true
+    method: POST
+    data: 
+      query: "{query}"
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: results
+    title_query: title/raw
+    content_query: content/raw
+    url_query: url/raw
+    thumbnail_query: file/raw
+    categories: [social]
+    word_segment: true
+    timeout: 6.0
+    shortcut: socl
+    weight: 150
+    disabled: false
+
+  - name : sec.cafe vuls
+    engine : json
+    engine_type: online
+    search_url : https://sec.cafe/api/vuli/new
+    method: POST
+    data: 
+      start: 1
+      keyword: "{query}"
+      order: update_time
+      source_limit: 0
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data
+    title_query: title
+    content_query: descript
+    url_prefix: https://sec.cafe/url/
+    url_query: tinyurl
+    word_segment: true
+    categories: [vul]
+    timeout: 20.0
+    shortcut: scv
+    weight: 100
+    disabled: false
+
+  - name : sploitus exps
+    engine : json
+    engine_type: online
+    search_url : https://sploitus.com/search
+    method: POST
+    data: 
+      type: exploits
+      sort: default
+      query: "{query}"
+      title: false
+      offset: 0
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: exploits
+    title_query: title
+    content_query: published
+    url_query: href
+    word_segment: true
+    categories: [poc]
+    timeout: 10.0
+    shortcut: sexp
+    weight: 100
+    disabled: false
+
+  - name: expku
+    engine: xpath
+    paging: true
+    first_page_num: 1
+    search_url: http://www.expku.com/search.php?keyword={query}&tag=1&typeid=0&page={pageno}
+    results_xpath: //table[@class="exploit_list"]
+    url_xpath: ./tr[1]/td[2]/a/@href
+    title_xpath: ./tr[1]/td[2]/a/text()
+    content_xpath: ./tr[1]/td[2]/a/text()
+    word_segment: true
+    categories: [poc]
+    enable_http: true
+    timeout: 6.0
+    weight: 100
+    shortcut: expk
+  
+  - name: vulmon
+    engine: xpath
+    paging: true
+    first_page_num: 1
+    search_url: https://vulmon.com/searchpage?q={query}&page={pageno}&sortby=bydate
+    results_xpath: //div[contains(@class, "items")]/div[@class="item"]
+    url_xpath: ./div[@class="content"]/a[@class="header"]/@href
+    title_xpath: ./div[@class="content"]/a[@class="header"]/h2/text()
+    content_xpath: ./div[@class="content"]/div[@class="description"]/a/text()
+    url_prefix: https://vulmon.com
+    word_segment: true
+    categories: [vul]
+    timeout: 6.0
+    weight: 10
+    shortcut: vmn
+
+  - name: seebug
+    engine: xpath
+    paging: true
+    first_page_num: 1
+    search_url: https://www.seebug.org/search/?keywords={query}&page={pageno}
+    results_xpath: //tbody/tr
+    url_xpath: .//a[@class="vul-title"]/@href
+    title_xpath: .//a[@class="vul-title"]/text()
+    content_xpath: .//a[@class="vul-title"]/text()
+    url_prefix: https://www.seebug.org
+    word_segment: true
+    categories: [vul]
+    timeout: 6.0
+    weight: 20
+    shortcut: seb
+
+  - name: dushu
+    engine: xpath
+    paging: false
+    first_page_num: 1
+    search_url: https://www.dushu.com/search.aspx?qd={query}
+    results_xpath: //div[@class="searchlist"]/ul/li
+    url_xpath: ./div[@class="book-info"]/h3/a/@href
+    title_xpath: ./div[@class="book-info"]/h3/a//text()
+    content_xpath: ./div[@class="book-info"]/p/text()
+    url_prefix: https://www.dushu.com
+    word_segment: true
+    categories: [book]
+    timeout: 6.0
+    weight: 100
+    shortcut: dus
+
+  - name: snyk
+    engine: xpath
+    paging: true
+    first_page_num: 1
+    search_url: https://security.snyk.io/vuln/?search={query}&page={pageno}
+    results_xpath: //tbody/tr
+    url_xpath: ./td[1]/a/@href
+    title_xpath: ./td[1]/a//text()
+    content_xpath: ./td[2]/a//text()
+    url_prefix: https://security.snyk.io/
+    word_segment: true
+    categories: [vul]
+    timeout: 6.0
+    weight: 10
+    shortcut: snyk
+
+  - name : sec.cafe links
+    engine : json
+    engine_type: online
+    search_url : https://sec.cafe/api/links/query
+    method: POST
+    data: 
+      keyword: "{query}"
+      type: all
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data
+    title_query: short_name
+    content_query: name
+    url_prefix: https://sec.cafe/url/
+    url_query: tinyurl
+    word_segment: true
+    categories: [navigation]
+    timeout: 20.0
+    shortcut: scl
+    weight: 200
+    disabled: false
+
+  - name : sec links
+    engine : json
+    engine_type: online
+    search_url : http://appsearch:3002/api/as/v1/engines/sec-links/search.json
+    enable_http: true
+    method: POST
+    data: 
+      query: "{query}"
+    headers:
+      Authorization: Bearer CHANGE_ME_APPSEARCH_SEARCH_KEY
+      Content-Type: application/json
+    results_query: results
+    title_query: title/raw
+    content_query: content/raw
+    url_query: url/raw
+    categories: [navigation]
+    word_segment: true
+    timeout: 6.0
+    shortcut: scln
+    weight: 150
+    disabled: false
+
+  - name: freebuf tools
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://www.freebuf.com/fapi/frontend/search/article?content={query}&articleType=%E5%B7%A5%E5%85%B7&year=&time=0&page={pageno}&limit=20
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/data_list
+    title_query: post_title
+    content_query: content
+    url_prefix: https://www.freebuf.com
+    url_query: url
+    word_segment: true
+    categories: [project]
+    timeout: 6.0
+    weight: 5.0
+    shortcut: frbtl
+
+  - name: freebuf vul
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://www.freebuf.com/fapi/frontend/search/article?content={query}&articleType=%E6%BC%8F%E6%B4%9E&year=&time=0&page={pageno}&limit=20
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/data_list
+    title_query: post_title
+    content_query: content
+    url_prefix: https://www.freebuf.com
+    url_query: url
+    word_segment: true
+    categories: [vul]
+    timeout: 6.0
+    weight: 5.0
+    shortcut: frbv
+
+  - name: freebuf course
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://www.freebuf.com/fapi/frontend/search/article?content={query}&articleType=%E8%A7%86%E9%A2%91,FreeBuf%E5%85%AC%E5%BC%80%E8%AF%BE&year=&time=0&page={pageno}&limit=20
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/data_list
+    title_query: post_title
+    content_query: content
+    url_prefix: https://www.freebuf.com
+    url_query: url
+    word_segment: true
+    categories: [course]
+    timeout: 6.0
+    weight: 5.0
+    shortcut: frbc
+
+  - name : ichunqiu
+    engine : ichunqiu
+    engine_type: online
+    search_url : https://www.ichunqiu.com/courses/ajaxDoSearch
+    enable_http: true
+    method: POST
+    data: 
+      key_word: "{query}"
+      type: 0
+    headers:
+      Accept: application/json, text/javascript, */*; q=0.01
+    results_query: data/courseInfo/list
+    title_query: courseName
+    content_query: description
+    url_query: courseID
+    url_prefix: https://www.ichunqiu.com/course/
+    categories: [course]
+    word_segment: true
+    timeout: 6.0
+    shortcut: icq
+    weight: 200
+    disabled: false
+
+  - name: freebuf event
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://www.freebuf.com/fapi/frontend/search/article?content={query}&articleType=%E6%B4%BB%E5%8A%A8&year=&time=0&page={pageno}&limit=20
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/data_list
+    title_query: post_title
+    content_query: content
+    url_prefix: https://www.freebuf.com
+    url_query: url
+    word_segment: true
+    categories: [event]
+    timeout: 6.0
+    weight: 5.0
+    shortcut: frbe
+
+  - name: freebuf technical
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://www.freebuf.com/fapi/frontend/search/article?content={query}&articleType=WEB%E5%AE%89%E5%85%A8,%E6%97%A0%E7%BA%BF%E5%AE%89%E5%85%A8,%E4%BC%81%E4%B8%9A%E5%AE%89%E5%85%A8,%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8,%E7%BB%88%E7%AB%AF%E5%AE%89%E5%85%A8,%E5%B7%A5%E6%8E%A7%E5%AE%89%E5%85%A8,%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8,%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8,%E5%AE%B9%E5%99%A8%E5%AE%89%E5%85%A8,%E6%A0%87%E5%87%86%E4%B8%8E%E5%90%88%E8%A7%84,%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86,%E5%85%&year=&time=0&page={pageno}&limit=20
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/data_list
+    title_query: post_title
+    content_query: content
+    url_prefix: https://www.freebuf.com
+    url_query: url
+    categories: [technical]
+    timeout: 6.0
+    weight: 10.0
+    shortcut: frbt
+
+  - name: freebuf standards
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://www.freebuf.com/fapi/frontend/search/article?content={query}&articleType=%E6%A0%87%E5%87%86%E4%B8%8E%E5%90%88%E8%A7%84&year=&time=0&page={pageno}&limit=20
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/data_list
+    title_query: post_title
+    content_query: content
+    url_prefix: https://www.freebuf.com
+    url_query: url
+    word_segment: true
+    categories: [standards]
+    timeout: 6.0
+    weight: 5.0
+    shortcut: frbs
+
+  - name: freebuf job
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://www.freebuf.com/fapi/frontend/search/article?content={query}&articleType=%E6%8B%9B%E8%81%98&year=&time=0&page={pageno}&limit=20
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/data_list
+    title_query: post_title
+    content_query: content
+    url_prefix: https://www.freebuf.com
+    url_query: url
+    word_segment: true
+    categories: [job]
+    timeout: 6.0
+    weight: 100.0
+    shortcut: frbj
+
+  - name: freebuf paper
+    engine: json
+    paging: true
+    first_page_num: 1
+    search_url: https://fapi.freebuf.com/gapi/web/search/resources?keyword={query}&page={pageno}&page_size=20&identify=&type=&society_id=0
+    headers:
+      accept: application/json
+      Content-Type: application/json
+    results_query: data/items
+    title_query: file_name
+    content_query: file_summary
+    url_prefix: https://wiki.freebuf.com/societyDetail/articleDetail?article_id=
+    url_query: article_id
+    categories: [paper]
+    timeout: 6.0
+    weight: 100.0
+    shortcut: frbp
+
+  - name: vipread
+    engine: xpath
+    paging: true
+    first_page_num: 1
+    search_url: https://vipread.com/library/search?keyword={query}&page={pageno}
+    results_xpath: //div[contains(@class,"row")]//div[contains(@class,"col-md-6")]
+    url_xpath: .//h5[contains(@class,"ui-v2")]/a[last()]/@href
+    title_xpath: .//h5[contains(@class,"ui-v2")]//text()
+    content_xpath: .//h5[contains(@class,"ui-v2")]/..//text()
+    url_prefix: https://vipread.com/
+    verify: false
+    word_segment: true
+    enable_http: true
+    categories: [paper]
+    timeout: 6.0
+    weight: 200
+    shortcut: vrd
+
+  - name: seebug paper
+    engine: xpath
+    paging: true
+    first_page_num: 1
+    search_url: https://paper.seebug.org/?keyword={query}
+    results_xpath: //div[@class="main-inner"]/article
+    url_xpath: ./header[@class="post-header"]/h5[@class="post-title"]/a[last()]/@href
+    title_xpath: ./header[@class="post-header"]/h5[@class="post-title"]/a[last()]/text()
+    content_xpath: .//section[@class="post-content"]/text()
+    url_prefix: https://paper.seebug.org
+    word_segment: true
+    categories: [paper]
+    timeout: 6.0
+    weight: 80
+    shortcut: sbp
+
+  - name: hackinn
+    engine: xpath
+    paging: true
+    first_page_num: 1
+    search_url: https://www.hackinn.com/search/?keyword={query}
+    results_xpath: //tbody/tr
+    url_xpath: ./td[2]/a/@href
+    title_xpath: ./td[@class="size"]/text()
+    content_xpath: ./td[@class="date"]/text()
+    categories: [paper]
+    timeout: 6.0
+    weight: 90
+    shortcut: hcki
+
+  - name: bing
+    engine: bing
+    shortcut: bi
+    disabled: false
+
+  - name: bing images
+    engine: bing_images
+    shortcut: bii
+
+  - name: bing news
+    engine: bing_news
+    shortcut: bin
+    disabled: true
+
+  - name: gitlab
+    engine: json_engine
+    paging: true
+    search_url: https://gitlab.com/api/v4/projects?search={query}&page={pageno}
+    url_query: web_url
+    title_query: name_with_namespace
+    content_query: description
+    page_size: 20
+    categories: [project]
+    shortcut: gl
+    timeout: 10.0
+    disabled: true
+    about:
+      website: https://about.gitlab.com/
+      wikidata_id: Q16639197
+      official_api_documentation: https://docs.gitlab.com/ee/api/
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+
+  - name: github
+    engine: github
+    shortcut: gh
+    categories: [project]
+
+    # This a Gitea service. If you would like to use a different instance,
+    # change codeberg.org to URL of the desired Gitea host. Or you can create a
+    # new engine by copying this and changing the name, shortcut and search_url.
+
+  - name: codeberg
+    engine: json_engine
+    search_url: https://codeberg.org/api/v1/repos/search?q={query}&limit=10
+    url_query: html_url
+    title_query: name
+    content_query: description
+    categories: [project]
+    shortcut: cb
+    disabled: true
+    about:
+      website: https://codeberg.org/
+      wikidata_id:
+      official_api_documentation: https://try.gitea.io/api/swagger
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+
+  # - name: google
+  #   engine: google
+  #   shortcut: go
+  #   # additional_tests:
+  #   #   android: *test_android
+  #   proxies:
+  #     http: http://<user>:<password>@<proxy-host>:<proxy-port>
+  #     https: https://<user>:<password>@<proxy-host>:<proxy-port>
+
+  - name: z-library
+    engine: zlibrary
+    shortcut: zlib
+    categories: it
+    timeout: 7.0
+    categories: [book]
+    disabled: true
+
+  - name: mdn
+    shortcut: mdn
+    engine: json_engine
+    categories: [it]
+    paging: true
+    search_url: https://developer.mozilla.org/api/v1/search?q={query}&page={pageno}
+    results_query: documents
+    url_query: mdn_url
+    url_prefix: https://developer.mozilla.org
+    title_query: title
+    content_query: summary
+    about:
+      website: https://developer.mozilla.org
+      wikidata_id: Q3273508
+      official_api_documentation: null
+      use_official_api: false
+      require_api_key: false
+      results: JSON
+  
+  - name: wikibooks
+    engine: mediawiki
+    weight: 0.5
+    shortcut: wb
+    categories: [book]
+    base_url: 'https://{language}.wikibooks.org/'
+    search_type: text
+    disabled: true
+    about:
+      website: https://www.wikibooks.org/
+      wikidata_id: Q367
+
+  - name: wolframalpha
+    shortcut: wa
+    # You can use the engine using the official stable API, but you need an API
+    # key.  See: https://products.wolframalpha.com/api/
+    #
+    # engine: wolframalpha_api
+    # api_key: ''
+    #
+    # Or you can use the html non-stable engine, activated by default
+    engine: wolframalpha_noapi
+    timeout: 6.0
+    categories: general
+    disabled: true
+
+
+# Doku engine lets you access to any Doku wiki instance:
+# A public one or a privete/corporate one.
+#  - name: ubuntuwiki
+#    engine: doku
+#    shortcut: uw
+#    base_url: 'https://doc.ubuntu-fr.org'
+
+# Be careful when enabling this engine if you are
+# running a public instance. Do not expose any sensitive
+# information. You can restrict access by configuring a list
+# of access tokens under tokens.
+#  - name: git grep
+#    engine: command
+#    command: ['git', 'grep', '{{QUERY}}']
+#    shortcut: gg
+#    tokens: []
+#    disabled: true
+#    delimiter:
+#        chars: ':'
+#        keys: ['filepath', 'code']
+
+# Be careful when enabling this engine if you are
+# running a public instance. Do not expose any sensitive
+# information. You can restrict access by configuring a list
+# of access tokens under tokens.
+#  - name: locate
+#    engine: command
+#    command: ['locate', '{{QUERY}}']
+#    shortcut: loc
+#    tokens: []
+#    disabled: true
+#    delimiter:
+#        chars: ' '
+#        keys: ['line']
+
+# Be careful when enabling this engine if you are
+# running a public instance. Do not expose any sensitive
+# information. You can restrict access by configuring a list
+# of access tokens under tokens.
+#  - name: find
+#    engine: command
+#    command: ['find', '.', '-name', '{{QUERY}}']
+#    query_type: path
+#    shortcut: fnd
+#    tokens: []
+#    disabled: true
+#    delimiter:
+#        chars: ' '
+#        keys: ['line']
+
+# Be careful when enabling this engine if you are
+# running a public instance. Do not expose any sensitive
+# information. You can restrict access by configuring a list
+# of access tokens under tokens.
+#  - name: pattern search in files
+#    engine: command
+#    command: ['fgrep', '{{QUERY}}']
+#    shortcut: fgr
+#    tokens: []
+#    disabled: true
+#    delimiter:
+#        chars: ' '
+#        keys: ['line']
+
+# Be careful when enabling this engine if you are
+# running a public instance. Do not expose any sensitive
+# information. You can restrict access by configuring a list
+# of access tokens under tokens.
+#  - name: regex search in files
+#    engine: command
+#    command: ['grep', '{{QUERY}}']
+#    shortcut: gr
+#    tokens: []
+#    disabled: true
+#    delimiter:
+#        chars: ' '
+#        keys: ['line']
+
+doi_resolvers:
+  oadoi.org: 'https://oadoi.org/'
+  doi.org: 'https://doi.org/'
+  doai.io: 'https://dissem.in/'
+  sci-hub.se: 'https://sci-hub.se/'
+  sci-hub.st: 'https://sci-hub.st/'
+  sci-hub.ru: 'https://sci-hub.ru/'
+
+default_doi_resolver: 'oadoi.org'

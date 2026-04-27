@@ -1,0 +1,23 @@
+{
+  "search_fields": {
+    "keywords": {
+      "weight": 1
+    },
+    "description": {
+      "weight": 1
+    },
+    "title": {
+      "weight": 3
+    },
+    "url": {
+      "weight": 1
+    },
+    "content": {
+      "weight": 2
+    },
+    "id": {
+      "weight": 1
+    }
+  },
+  "boosts": {}
+}

@@ -1,0 +1,15 @@
+cluster.name: app-search-docker-cluster
+# 节点名称
+node.name: es-master
+# 是否可以成为master节点
+node.master: true
+# 网络绑定
+network.host: 0.0.0.0
+# 是否允许该节点存储数据,默认开启
+discovery.type: single-node
+# 支持跨域访问
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+# 安全认证
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true

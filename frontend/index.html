@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SECSOSO，安全搜搜，搜索安全，AI驱动的网络安全内容聚合搜索，提供网络安全内容与资料的一键直达">
+    <meta name="keywords" content="secsoso,安全搜搜,安全搜索,网络安全专用搜索,网络安全结果聚合,漏洞情报,最新漏洞,漏洞库,PoC,漏洞,漏洞搜索,CVE">
+    <meta name="google-adsense-account" content="ca-pub-9376316394747034">
+    <title>SECSOSO 安全搜搜</title>
+    <script>
+      if (localStorage.getItem('dark-mode') === 'false' || !('dark-mode' in localStorage)) {
+        document.querySelector('html').classList.remove('dark');
+      } else {
+        document.querySelector('html').classList.add('dark');
+      }
+    </script>
+  </head>
+  <body class="font-inter antialiased bg-white text-slate-800 dark:bg-slate-900 dark:text-slate-200 tracking-tight">
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script async src="https://analytics.umami.is/script.js" data-website-id="ed84dbb9-dde2-4ef7-af6b-777df1055ca3"></script>
+  </body>
+</html>

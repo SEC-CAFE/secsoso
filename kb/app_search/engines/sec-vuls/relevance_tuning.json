@@ -1,0 +1,14 @@
+{
+  "search_fields": {
+    "title": {
+      "weight": 3
+    },
+    "content": {
+      "weight": 1
+    },
+    "id": {
+      "weight": 1
+    }
+  },
+  "boosts": {}
+}

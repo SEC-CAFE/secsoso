@@ -1,0 +1,11 @@
+fastapi==0.95.2
+loguru==0.7.0
+uvicorn==0.22
+aiohttp==3.8.4
+peewee==3.15.4
+peewee_async==0.8.0
+orjson==3.8.14
+python-dotenv==0.21.1
+openai==1.37.0
+sentry_sdk==2.10.0
+sse_starlette==2.1.2

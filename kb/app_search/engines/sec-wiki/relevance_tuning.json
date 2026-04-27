@@ -1,0 +1,20 @@
+{
+  "search_fields": {
+    "title": {
+      "weight": 3
+    },
+    "category": {
+      "weight": 1
+    },
+    "content": {
+      "weight": 2
+    },
+    "child_category": {
+      "weight": 1
+    },
+    "id": {
+      "weight": 1
+    }
+  },
+  "boosts": {}
+}

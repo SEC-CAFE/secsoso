@@ -1,0 +1,10 @@
+services:
+  backend:
+    container_name: backend
+    image: secsoso_backend:1.0
+    ports:
+      - "8000:8000"
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+    volumes:
+      - ./backend:/app
+      - /etc/localtime:/etc/localtime

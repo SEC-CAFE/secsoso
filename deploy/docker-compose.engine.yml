@@ -1,0 +1,59 @@
+services:
+    # ollama:
+    #     container_name: secsoso_ollama
+    #     image: ollama/ollama
+    #     volumes:
+    #         - /data/ollama/ollama:/root/.ollama
+    #         - /data/ollama/models:/data/models
+    #         - /etc/localtime:/etc/localtime
+    #     networks:
+    #         proxy:
+    #             ipv4_address: 172.25.0.2
+    searxng:
+        container_name: secsoso_searxng
+        image: docker.io/searxng/searxng:latest
+        volumes:
+            - ./searxng:/etc/searxng:rw
+            - ./searxng/json.py:/usr/local/searxng/searx/engines/json.py
+        networks:
+            proxy:
+                ipv4_address: 172.25.0.3
+    elasticsearch:
+        container_name: secsoso_elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+        environment:
+            - "bootstrap.memory_lock=true"
+            - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+        volumes:
+            - ./appsearch/data:/usr/share/elasticsearch/data
+            - ./appsearch/logs/es:/usr/share/elasticsearch/logs
+            - ./appsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+            - /etc/localtime:/etc/localtime
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        networks:
+            proxy:
+                ipv4_address: 172.25.0.4
+    appsearch:
+        container_name: secsoso_appsearch
+        image: docker.elastic.co/app-search/app-search:7.6.0
+        environment:
+            - "allow_es_settings_modification=true"
+            - "JAVA_OPTS=-Xms2g -Xmx2g"
+            - "APP_SEARCH_DEFAULT_PASSWORD=${APP_SEARCH_DEFAULT_PASSWORD:-CHANGE_ME}"
+        volumes:
+            - ./appsearch/app-search.yml:/usr/share/app-search/config/app-search.yml
+            - ./appsearch/logs/appsearch:/var/log/app-search
+            - /etc/localtime:/etc/localtime
+        ports:
+            - 3012:3002
+        networks:
+            proxy:
+                ipv4_address: 172.25.0.5
+networks:
+  proxy:
+    ipam:
+      config:
+      - subnet: 172.25.0.0/24

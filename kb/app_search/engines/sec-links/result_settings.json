@@ -1,0 +1,31 @@
+{
+  "result_fields": {
+    "file": {
+      "raw": {}
+    },
+    "keywords": {
+      "raw": {}
+    },
+    "description": {
+      "raw": {}
+    },
+    "id": {
+      "raw": {}
+    },
+    "title": {
+      "raw": {}
+    },
+    "category": {
+      "raw": {}
+    },
+    "content": {
+      "raw": {}
+    },
+    "url": {
+      "raw": {}
+    },
+    "child_category": {
+      "raw": {}
+    }
+  }
+}

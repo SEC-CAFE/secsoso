@@ -1,0 +1,49 @@
+{
+  "search_fields": {
+    "title": {
+      "weight": 3
+    },
+    "category": {
+      "weight": 1
+    },
+    "content": {
+      "weight": 2
+    },
+    "child_category": {
+      "weight": 1
+    },
+    "id": {
+      "weight": 1
+    }
+  },
+  "result_fields": {
+    "file": {
+      "raw": {}
+    },
+    "keywords": {
+      "raw": {}
+    },
+    "description": {
+      "raw": {}
+    },
+    "id": {
+      "raw": {}
+    },
+    "title": {
+      "raw": {}
+    },
+    "category": {
+      "raw": {}
+    },
+    "url": {
+      "raw": {}
+    },
+    "content": {
+      "raw": {}
+    },
+    "child_category": {
+      "raw": {}
+    }
+  },
+  "boosts": {}
+}

@@ -1,0 +1,17 @@
+.DS_Store
+.vite-ssg-dist
+.vite-ssg-temp
+*.local
+dist
+dist-ssr
+node_modules
+.idea/
+*.log
+.venv
+.vite
+__pycache__/
+*.pyc
+*.pyo
+frontend/dist
+deploy/nginx/.proxy_htpasswd
+deploy/.env
