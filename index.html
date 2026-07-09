@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SECSOSO 安全搜搜</title>
+  <meta name="description" content="SECSOSO 安全搜搜，AI 驱动的网络安全内容聚合搜索。">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #ffffff;
+      --text: #09090b;
+      --muted: #71717a;
+      --soft: #f1f5f9;
+      --soft-hover: #e2e8f0;
+      --line: #e2e8f0;
+      --blue: #0284c7;
+      --blue-hover: #0369a1;
+      --footer: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      flex: 1;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 0;
+    }
+
+    .search-panel {
+      width: min(550px, 100%);
+      padding: 0 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      user-select: none;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 500;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #52525b;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 500;
+      padding: 6px 8px;
+      transform: scale(.75);
+      transform-origin: left center;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, .08);
+    }
+
+    .search-input {
+      min-width: 0;
+      width: 100%;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      font-size: 16px;
+      padding: 6px 12px;
+    }
+
+    .search-input::placeholder {
+      color: #94a3b8;
+    }
+
+    .submit {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 12px;
+      background: #0ea5e9;
+      color: #fff;
+      cursor: pointer;
+      transition: background .15s ease, transform .15s ease;
+    }
+
+    .submit:hover {
+      background: var(--blue-hover);
+    }
+
+    .submit:active {
+      transform: scale(.95);
+    }
+
+    .submit:disabled {
+      cursor: not-allowed;
+      background: #94a3b8;
+      opacity: .7;
+      transform: none;
+    }
+
+    .submit:disabled:hover {
+      background: #94a3b8;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .chip {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(228, 228, 231, .5);
+      border-radius: 999px;
+      background: var(--soft);
+      color: #52525b;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 500;
+      padding: 7px 9px;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .chip:hover {
+      background: var(--soft-hover);
+      color: var(--text);
+    }
+
+    .feedback {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .feedback-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .feedback a {
+      color: #0284c7;
+      font-weight: 500;
+    }
+
+    .notice {
+      margin: 14px auto 0;
+      max-width: 620px;
+      border: 1px solid rgba(2, 132, 199, .18);
+      border-radius: 999px;
+      background: rgba(14, 165, 233, .08);
+      color: #0f172a;
+      font-size: 12px;
+      line-height: 1.7;
+      font-weight: 500;
+      padding: 8px 14px;
+      text-align: center;
+    }
+
+    .notice a {
+      color: #0284c7;
+      font-weight: 700;
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      color: var(--footer);
+      font-size: 12px;
+      padding: 32px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      text-align: left;
+    }
+
+    .footer-slogan {
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .footer-record {
+      color: var(--muted);
+    }
+
+    .project {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #475569;
+    }
+
+    .project-logo {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      border-radius: 999px;
+      display: block;
+    }
+
+    .project-block {
+      text-align: right;
+    }
+
+    .record-links {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .record-links a:hover,
+    .project:hover,
+    .feedback a:hover {
+      color: var(--blue);
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 0 18px;
+      }
+
+      .hero {
+        min-height: 540px;
+        padding: 40px 0;
+      }
+
+      .search-panel {
+        padding: 0;
+      }
+
+      .brand {
+        gap: 10px;
+      }
+
+      .brand-title {
+        font-size: 24px;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .project-block {
+        text-align: center;
+      }
+
+      .record-links {
+        justify-content: center;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #020617;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --soft: #334155;
+        --soft-hover: #475569;
+        --line: #1e293b;
+        --footer: #64748b;
+      }
+
+      .search-box,
+      .search-input {
+        background: #334155;
+      }
+
+      .badge,
+      .chip {
+        color: #f1f5f9;
+      }
+
+      .project {
+        color: #cbd5e1;
+      }
+
+      .notice {
+        border-color: rgba(56, 189, 248, .24);
+        background: rgba(56, 189, 248, .1);
+        color: #e2e8f0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="hero" aria-label="SECSOSO 搜索首页">
+      <section class="search-panel">
+        <div class="brand">
+          <svg class="brand-mark" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M7 9.12739L24.0082 4L41 9.12739V19.6424C41 30.6945 34.153 40.5063 24.0025 44C13.8492 40.5064 7 30.6923 7 19.6376V9.12739Z" fill="none" stroke="#0284C7" stroke-width="3" stroke-linejoin="bevel"/>
+            <path d="M24 30C27.866 30 31 26.866 31 23C31 19.134 27.866 16 24 16C20.134 16 17 19.134 17 23C17 26.866 20.134 30 24 30Z" fill="none" stroke="#0284C7" stroke-width="3" stroke-linejoin="bevel"/>
+            <path d="M29 29L35 36" stroke="#0284C7" stroke-width="3" stroke-linecap="square" stroke-linejoin="bevel"/>
+            <path d="M41 19.6426C41 30.6946 34.153 40.5065 24.0024 44.0002" stroke="#0284C7" stroke-width="3" stroke-linejoin="bevel"/>
+          </svg>
+          <h1 class="brand-title">SECSOSO 安全搜搜</h1>
+          <span class="badge">beta</span>
+        </div>
+
+        <form action="#" method="get">
+          <label class="search-box" for="search-bar">
+            <input class="search-input" id="search-bar" name="question" type="search" autocomplete="off" placeholder="Ask SECSOSO anything about security ...">
+            <button class="submit" type="submit" aria-label="搜索" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </button>
+          </label>
+        </form>
+
+        <div class="chips" aria-label="快捷问题">
+          <a class="chip" href="#">怎么修复SQL注入?</a>
+          <a class="chip" href="#">最新需要关注的漏洞?</a>
+          <a class="chip" href="#">SECSOSO是什么?</a>
+        </div>
+
+        <div class="feedback">
+          <div class="feedback-row">
+            <span>对SECSOSO有建议或反馈bug?</span>
+            <a href="mailto:f00y1n9@gmail.com">联系我们!</a>
+          </div>
+          <div class="notice">
+            当前 LLM 的能力发展已不需要专门的安全垂直领域 AI 搜索，站点下线，项目已开源，项目地址
+            <a href="https://github.com/SEC-CAFE/secsoso" target="_blank" rel="noreferrer">SEC-CAFE/secsoso</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-record">
+          <div>Copyright &copy; SECSOSO 安全搜搜.</div>
+          <div class="record-links">
+            <a href="https://beian.mps.gov.cn/#/query/webSearch?code=44030002003757" rel="noreferrer" target="_blank">粤公网安备44030002003757号</a>
+            <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2024258509号-1</a>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="footer-slogan">安全搜搜，搜索安全，AI驱动的网络安全内容聚合搜索</div>
+          <a class="project" href="https://www.fooying.com">
+            <svg class="project-logo" width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="24" cy="24" r="24" fill="#0F172A"/>
+              <path d="M15 13H34V18H21V24H32V29H21V36H15V13Z" fill="#F8FAFC"/>
+              <path d="M25 18H34V23H25V18Z" fill="#38BDF8"/>
+            </svg>
+            <span>A Fooying's Project</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
