@@ -90,6 +90,7 @@ npm install
 npm run dev
 ```
 
+
 默认前端会请求 `http://127.0.0.1:8000`。
 
 ## 后端环境变量
@@ -106,6 +107,8 @@ npm run dev
   - `LLM_API_KEY`
 
 > 所有密钥默认留空，按你的实际环境填写。
+>
+> 注：根目录下 index.html 非必要文件，部署的时候请删除
 
 ## API 说明
 
@@ -183,3 +186,5 @@ SSE 流式接口，返回事件：
 ![ctf工具_chatgpt](imgs/ctf工具_chatgpt.jpg)
 ##### metaso
 ![ctf工具_metaso](imgs/ctf工具_metaso.jpg)
+
+
